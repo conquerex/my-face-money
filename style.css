@@ -267,6 +267,7 @@ body {
     align-items: center;
     overflow: hidden;
     border-radius: 12px;
+    container-type: inline-size;
 }
 
 .money-img {
@@ -292,12 +293,12 @@ body {
     position: absolute;
     left: 7%;
     bottom: 8%;
-    font-size: 2.4rem;
+    font-size: 8.0cqw;
     font-weight: 800;
     color: #3d9180;
     font-family: 'Roboto Mono', monospace;
     letter-spacing: -0.05em;
-    -webkit-text-stroke: 1.5px #183722;
+    -webkit-text-stroke: 0.3cqw #183722;
     z-index: 2;
 }
 
@@ -446,9 +447,27 @@ body {
 
 /* Mobile Adjustments */
 @media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .total-value {
+        font-size: 1.5rem;
+    }
+
+    #money-value {
+        font-size: 2.2rem;
+    }
+
     .currency-grid {
         grid-template-columns: 1fr;
     }
-
-
 }
