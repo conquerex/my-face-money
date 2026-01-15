@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계산 방식 안내 - My Face Money</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        .formula-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .math-text {
+            font-size: 1.5rem;
+            font-family: 'Outfit', sans-serif;
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+
+        .step-list {
+            text-align: left;
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-item::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+        }
+
+        .example-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header class="header">
+            <h1 class="title">How it <span class="accent">Works</span></h1>
+            <p class="subtitle">My Face Money의 경제적 가치 산출 방식</p>
+        </header>
+
+        <section class="card">
+            <div class="step-list">
+                <div class="step-item">
+                    <h3>AI 모델 데이터 분석</h3>
+                    <p>Google Teachable Machine으로 학습된 딥러닝 모델이 사진 속 얼굴의 특징을 5가지 화폐 단위(100, 1,000, 5,000, 10,000, 50,000)와
+                        대조합니다.</p>
+                </div>
+                <div class="step-item">
+                    <h3>확률(Probability) 산출</h3>
+                    <p>분석된 특징이 각 화폐 단위에 얼마나 가까운지 0에서 1 사이의 확률값으로 계산합니다. (예: 50,000원권에 70% 가깝다면 0.7)</p>
+                </div>
+                <div class="step-item">
+                    <h3>가중 평균 가계산</h3>
+                    <p>각 화폐 단위에 해당 확률을 곱한 뒤 모두 더하여 최종 가치를 산출합니다.</p>
+                </div>
+            </div>
+
+            <div class="formula-card">
+                <p>수식 안내</p>
+                <div class="math-text">Value = Σ (Unit × Probability)</div>
+                <div class="example-box">
+                    <strong>예시:</strong><br>
+                    (50,000 × 0.8) + (10,000 × 0.2) = 42,000원
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%" onclick="location.href='index.html'">돌아가기</button>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 My Face Money. Powered by TensorFlow.js</p>
+        </footer>
+    </main>
+</body>
+
+</html>

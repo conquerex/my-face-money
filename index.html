@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 얼굴 분석 - My Face Money</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&family=Roboto+Mono:wght@700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header class="header">
+            <h1 class="title">My Face <span class="accent">Money</span></h1>
+            <p class="subtitle">AI가 분석하는 당신의 관상과 경제적 가치</p>
+        </header>
+
+        <section class="card main-card">
+            <div id="upload-area" class="upload-area">
+                <div class="upload-content">
+                    <div class="icon-box">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                    </div>
+                    <p class="upload-text">사진을 클릭하거나 드래그하여 업로드하세요</p>
+                    <input type="file" id="image-input" accept="image/*" hidden>
+                    <button class="btn btn-primary" onclick="document.getElementById('image-input').click()">사진
+                        선택하기</button>
+                </div>
+                <div id="preview-container" class="preview-container hidden">
+                    <img id="face-preview" src="" alt="Face Preview">
+                    <div class="scanning-line"></div>
+                </div>
+            </div>
+
+            <div id="loading-overlay" class="loading-overlay hidden">
+                <div class="spinner"></div>
+                <p>AI 모델 분석 중...</p>
+            </div>
+
+            <div id="result-area" class="result-area hidden">
+                <div class="result-summary">
+                    <h2 id="total-value-text" class="total-value">당신은 <span id="money-value">0</span>원권입니다.</h2>
+                </div>
+
+                <div class="comparison-container">
+                    <img src="mymoney.png" alt="My Money" class="money-img">
+                    <span id="money-overlay-text" class="money-overlay">0</span>
+                    <div class="face-frame">
+                        <img id="result-face" src="" alt="Your Face" class="processed-face">
+                    </div>
+                </div>
+
+                <h3 class="result-subtitle">세부 분석 결과</h3>
+                <div id="label-container" class="label-container">
+                    <!-- Results will be injected here -->
+                </div>
+
+                <button class="btn btn-secondary" onclick="resetUpload()">다시 시도하기</button>
+            </div>
+        </section>
+
+        <section class="card coming-soon-section">
+            <h3 class="section-title">Coming Soon</h3>
+            <div class="currency-grid">
+                <div class="currency-item disabled">
+                    <div class="flag">🇯🇵</div>
+                    <span>일본 엔화 (JPY)</span>
+                </div>
+                <div class="currency-item disabled">
+                    <div class="flag">🇺🇸</div>
+                    <span>미국 달러 (USD)</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p><a href="about.html" style="color: var(--primary); text-decoration: none;">어떻게 계산되나요?</a></p>
+            <p>&copy; 2026 My Face Money. Powered by Teachable Machine</p>
+        </footer>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
