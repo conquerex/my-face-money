@@ -1,4 +1,16 @@
+# Robots.txt for My Face Money
+# Optimized for Google, Naver, and other search engines
+
 User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+User-agent: Daumoa
 Allow: /
 
 Sitemap: https://my-face-money.pages.dev/sitemap.xml
