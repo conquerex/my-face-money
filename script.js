@@ -112,6 +112,9 @@ async function predict() {
             if (bar) bar.style.width = `${percentage}%`;
         }, 100 + (i * 100));
     });
+
+    // Initialize Kakao Share with the result
+    initKakaoShare(roundedValue);
 }
 
 function resetUpload() {
@@ -148,3 +151,56 @@ uploadArea.addEventListener('drop', (e) => {
         reader.readAsDataURL(e.dataTransfer.files[0]);
     }
 });
+// Kakao SDK Initialization
+if (window.Kakao) {
+    if (!Kakao.isInitialized()) {
+        Kakao.init('4c9888941673895e6922d3637e1795c3'); // User's JavaScript Key
+    }
+}
+
+function shareX() {
+    const text = `나의 얼굴 가치는 얼마일까? AI가 분석한 나의 얼굴 관상 결과: ${document.getElementById('money-value').innerText}원! #MyFaceMoney #AI관상 #얼굴분석`;
+    const url = "https://my-face-money.pages.dev/";
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+}
+
+function shareFacebook() {
+    const url = "https://my-face-money.pages.dev/";
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+}
+
+function copyLink() {
+    const url = "https://my-face-money.pages.dev/";
+    navigator.clipboard.writeText(url).then(() => {
+        alert("링크가 복사되었습니다!");
+    }).catch(err => {
+        console.error('Copy failed', err);
+    });
+}
+
+function initKakaoShare(value) {
+    if (!window.Kakao) return;
+
+    Kakao.Share.createDefaultButton({
+        container: '#kakao-link-btn',
+        objectType: 'feed',
+        content: {
+            title: '나의 얼굴 경제적 가치는?',
+            description: `분석 결과, 당신은 ${value.toLocaleString()}원권 얼굴입니다! AI 관상 분석 결과를 확인해보세요.`,
+            imageUrl: 'https://my-face-money.pages.dev/og-image.webp',
+            link: {
+                mobileWebUrl: 'https://my-face-money.pages.dev',
+                webUrl: 'https://my-face-money.pages.dev',
+            },
+        },
+        buttons: [
+            {
+                title: '나도 테스트하기',
+                link: {
+                    mobileWebUrl: 'https://my-face-money.pages.dev',
+                    webUrl: 'https://my-face-money.pages.dev',
+                },
+            },
+        ],
+    });
+}
