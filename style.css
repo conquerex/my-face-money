@@ -500,13 +500,6 @@ body {
     font-weight: 800;
 }
 
-.share-btn.facebook {
-    background: #1877F2;
-    color: #ffffff;
-    border: none;
-    font-size: 1.5rem;
-    font-weight: 800;
-}
 
 .share-btn.copy-link {
     background: var(--primary);

@@ -1,6 +1,7 @@
 const URL = "https://teachablemachine.withgoogle.com/models/TzriknE80/";
 
 let model, labelContainer, maxPredictions;
+let lastValue = 0;
 
 // Load the image model
 async function init() {
@@ -113,8 +114,8 @@ async function predict() {
         }, 100 + (i * 100));
     });
 
-    // Initialize Kakao Share with the result
-    initKakaoShare(roundedValue);
+    // Update lastValue for sharing
+    lastValue = roundedValue;
 }
 
 function resetUpload() {
@@ -164,11 +165,6 @@ function shareX() {
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
 }
 
-function shareFacebook() {
-    const url = "https://my-face-money.pages.dev/";
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-}
-
 function copyLink() {
     const url = "https://my-face-money.pages.dev/";
     navigator.clipboard.writeText(url).then(() => {
@@ -178,15 +174,17 @@ function copyLink() {
     });
 }
 
-function initKakaoShare(value) {
-    if (!window.Kakao) return;
+function shareKakao() {
+    if (!window.Kakao || !Kakao.isInitialized()) {
+        alert("카카오톡 공유를 이용할 수 없습니다.");
+        return;
+    }
 
-    Kakao.Share.createDefaultButton({
-        container: '#kakao-link-btn',
+    Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
             title: '나의 얼굴 경제적 가치는?',
-            description: `분석 결과, 당신은 ${value.toLocaleString()}원권 얼굴입니다! AI 관상 분석 결과를 확인해보세요.`,
+            description: `분석 결과, 당신은 ${lastValue.toLocaleString()}원권 얼굴입니다! AI 관상 분석 결과를 확인해보세요.`,
             imageUrl: 'https://my-face-money.pages.dev/og-image.webp',
             link: {
                 mobileWebUrl: 'https://my-face-money.pages.dev',
