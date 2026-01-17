@@ -25,7 +25,7 @@
     <meta property="og:url" content="https://my-face-money.pages.dev/about.html">
     <meta property="og:title" content="계산 방식 안내 - My Face Money">
     <meta property="og:description" content="My Face Money의 AI가 어떻게 경제적 가치를 계산하는지 그 원리를 확인해보세요.">
-    <meta property="og:image" content="https://my-face-money.pages.dev/og-image.png">
+    <meta property="og:image" content="https://my-face-money.pages.dev/og-image.webp">
     <meta property="og:locale" content="ko_KR">
     <meta property="og:site_name" content="My Face Money">
     <link rel="stylesheet" href="style.css">
@@ -33,7 +33,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
+
+    <!-- Favicon across all formats -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="favicon.svg" sizes="any">
+    <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+    <link rel="apple-touch-icon" href="favicon.svg">
     <style>
         .formula-card {
             background: rgba(255, 255, 255, 0.05);
@@ -108,7 +114,7 @@
     <main class="container">
         <header class="header">
             <h1 class="title">How it <span class="accent">Works</span></h1>
-            <p class="subtitle">My Face Money의 경제적 가치 산출 방식</p>
+            <p class="subtitle">AI 얼굴 가치 측정 및 관상 분석 원리 안내</p>
         </header>
 
         <section class="card">
