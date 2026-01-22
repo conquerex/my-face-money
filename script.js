@@ -258,8 +258,11 @@ async function predict() {
 
         resultItem.innerHTML = `
             <div class="result-label-row">
-                <span><img src="${imgSrc}" class="item-icon" alt="${formattedLabel}${unit}"> ${formattedLabel}${unit}</span>
-                <span>${percentage}%</span>
+                <div class="label-with-icon">
+                    <img src="${imgSrc}" class="item-icon" alt="${formattedLabel}${unit}" onerror="this.style.display='none'">
+                    <span class="currency-label">${formattedLabel}${unit}</span>
+                </div>
+                <span class="percentage-value">${percentage}%</span>
             </div>
             <div class="progress-bar-bg">
                 <div class="progress-bar-fill" style="width: 0%"></div>

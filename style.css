@@ -367,16 +367,41 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.label-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.currency-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+}
+
+.percentage-value {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--primary);
+    font-family: 'Outfit', sans-serif;
 }
 
 .item-icon {
-    width: 32px;
-    height: auto;
-    border-radius: 2px;
-    margin-right: 8px;
-    vertical-align: middle;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    width: 44px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.result-item:hover .item-icon {
+    transform: scale(1.1);
 }
 
 .progress-bar-bg {
