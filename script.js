@@ -1,7 +1,6 @@
 const CURRENCY_CONFIG = {
     KRW: {
         modelURL: "https://teachablemachine.withgoogle.com/models/TzriknE80/",
-        unit: "원",
         prefix: "item_won_",
         moneyBg: "images/mymoney.webp",
         overlayColor: "#3d9180",
@@ -11,7 +10,6 @@ const CURRENCY_CONFIG = {
     },
     JPY: {
         modelURL: "https://teachablemachine.withgoogle.com/models/UvsKhD7ls/",
-        unit: "엔",
         prefix: "item_yen_",
         moneyBg: "images/mymoney.webp",
         overlayColor: "#3d9180",
@@ -41,6 +39,87 @@ const resultMoneyImg = document.getElementById('result-money-img');
 const moneyValueDisplay = document.getElementById('money-value');
 const moneyOverlayText = document.getElementById('money-overlay-text');
 const totalValueText = document.getElementById('total-value-text');
+
+const TRANSLATIONS = {
+    ko: {
+        subtitle: "AI 얼굴 가치 분석 및 관상 테스트",
+        krw_label: "대한민국 원 (KRW)",
+        jpy_label: "일본 엔화 (JPY)",
+        usd_label: "미국 달러 (USD)",
+        upload_text: "사진을 클릭하거나 드래그하여 업로드하세요",
+        select_photo: "사진 선택하기",
+        loading_text: "AI 모델 분석 중...",
+        result_text_pre: "당신은 ",
+        result_text_post: "입니다.",
+        result_subtitle: "세부 분석 결과",
+        retry_button: "다시 시도하기",
+        how_it_works: "어떻게 계산되나요?",
+        currency_unit: "권",
+        face_preview_alt: "얼굴 미리보기",
+        money_result_alt: "My Face Money - AI 분석 화폐 결과",
+        your_face_alt: "당신의 얼굴",
+        krw_unit: "원",
+        jpy_unit: "엔"
+    },
+    ja: {
+        subtitle: "AI顔価値分析＆観相テスト",
+        krw_label: "韓国ウォン (KRW)",
+        jpy_label: "日本円 (JPY)",
+        usd_label: "米ドル (USD)",
+        upload_text: "画像をクリックまたはドラッグしてアップロードしてください",
+        select_photo: "写真を選択する",
+        loading_text: "AIモデル分析中...",
+        result_text_pre: "あなたは ",
+        result_text_post: "です。",
+        result_subtitle: "詳細分析結果",
+        retry_button: "もう一度試す",
+        how_it_works: "どのように計算されますか？",
+        currency_unit: "券",
+        face_preview_alt: "顔のプレビュー",
+        money_result_alt: "My Face Money - AI分析の通貨結果",
+        your_face_alt: "あなたの顔",
+        krw_unit: "ウォン",
+        jpy_unit: "円"
+    }
+};
+
+let currentLanguage = 'ko';
+
+function updateUI() {
+    const t = TRANSLATIONS[currentLanguage];
+
+    // Update text content
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+            el.innerText = t[key];
+        }
+    });
+
+    // Update alt text
+    document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+        const key = el.getAttribute('data-i18n-alt');
+        if (t[key]) {
+            el.alt = t[key];
+        }
+    });
+
+    // Update active state of lang buttons
+    document.querySelectorAll('.language-selector button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const activeBtn = document.getElementById(`lang-${currentLanguage}`);
+    if (activeBtn) activeBtn.classList.add('active');
+}
+
+function setLanguage(lang) {
+    if (currentLanguage === lang) return;
+    currentLanguage = lang;
+    updateUI();
+}
+
+// Initialize UI
+updateUI();
 
 async function setCurrency(currency) {
     if (currentCurrency === currency) return;
@@ -132,11 +211,13 @@ async function predict() {
     loadingOverlay.classList.add('hidden');
     resultArea.classList.remove('hidden');
 
+    const t = TRANSLATIONS[currentLanguage];
     const roundedValue = Math.round(totalValue);
     const formattedTotal = roundedValue.toLocaleString();
 
+    const unit = currentCurrency === 'KRW' ? t.krw_unit : t.jpy_unit;
     moneyValueDisplay.innerText = formattedTotal;
-    totalValueText.innerHTML = `당신은 <span id="money-value">${formattedTotal}</span>${config.unit}권입니다.`;
+    totalValueText.innerHTML = `${t.result_text_pre}<span id="money-value">${formattedTotal}</span>${unit}${t.currency_unit}${t.result_text_post}`;
     moneyValueDisplay.innerText = formattedTotal; // Re-sync just in case
 
     moneyOverlayText.innerText = roundedValue;
@@ -177,7 +258,7 @@ async function predict() {
 
         resultItem.innerHTML = `
             <div class="result-label-row">
-                <span><img src="${imgSrc}" class="item-icon" alt="${formattedLabel}${config.unit}"> ${formattedLabel}${config.unit}</span>
+                <span><img src="${imgSrc}" class="item-icon" alt="${formattedLabel}${unit}"> ${formattedLabel}${unit}</span>
                 <span>${percentage}%</span>
             </div>
             <div class="progress-bar-bg">

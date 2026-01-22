@@ -89,9 +89,14 @@
     </div>
 
     <main class="container">
+        <div class="language-selector">
+            <button onclick="setLanguage('ko')" id="lang-ko" class="active">KO</button>
+            <span class="separator">|</span>
+            <button onclick="setLanguage('ja')" id="lang-ja">JA</button>
+        </div>
         <header class="header">
             <h1 class="title">My Face <span class="accent">Money</span></h1>
-            <p class="subtitle">AI 얼굴 가치 분석 및 관상 테스트</p>
+            <p class="subtitle" data-i18n="subtitle">AI 얼굴 가치 분석 및 관상 테스트</p>
             <h2 class="hidden-seo"
                 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;">
                 인공지능(AI)이 분석하는 당신의 얼굴 관상과 경제적 가치 화폐 측정 서비스
@@ -102,15 +107,15 @@
             <div class="currency-grid">
                 <div class="currency-item active" id="select-krw" onclick="setCurrency('KRW')">
                     <div class="flag">🇰🇷</div>
-                    <span>대한민국 원 (KRW)</span>
+                    <span data-i18n="krw_label">대한민국 원 (KRW)</span>
                 </div>
                 <div class="currency-item" id="select-jpy" onclick="setCurrency('JPY')">
                     <div class="flag">🇯🇵</div>
-                    <span>일본 엔화 (JPY)</span>
+                    <span data-i18n="jpy_label">일본 엔화 (JPY)</span>
                 </div>
                 <div class="currency-item disabled">
                     <div class="flag">🇺🇸</div>
-                    <span>미국 달러 (USD)</span>
+                    <span data-i18n="usd_label">미국 달러 (USD)</span>
                     <span class="badge">Coming Soon</span>
                 </div>
             </div>
@@ -127,47 +132,50 @@
                             <line x1="12" y1="3" x2="12" y2="15" />
                         </svg>
                     </div>
-                    <p class="upload-text">사진을 클릭하거나 드래그하여 업로드하세요</p>
+                    <p class="upload-text" data-i18n="upload_text">사진을 클릭하거나 드래그하여 업로드하세요</p>
                     <input type="file" id="image-input" accept="image/*" hidden>
-                    <button class="btn btn-primary" onclick="document.getElementById('image-input').click()">사진
+                    <button class="btn btn-primary" onclick="document.getElementById('image-input').click()"
+                        data-i18n="select_photo">사진
                         선택하기</button>
                 </div>
                 <div id="preview-container" class="preview-container hidden">
-                    <img id="face-preview" src="" alt="Face Preview">
+                    <img id="face-preview" src="" alt="Face Preview" data-i18n-alt="face_preview_alt">
                     <div class="scanning-line"></div>
                 </div>
             </div>
 
             <div id="loading-overlay" class="loading-overlay hidden">
                 <div class="spinner"></div>
-                <p>AI 모델 분석 중...</p>
+                <p data-i18n="loading_text">AI 모델 분석 중...</p>
             </div>
 
             <div id="result-area" class="result-area hidden">
                 <div class="result-summary">
-                    <h2 id="total-value-text" class="total-value">당신은 <span id="money-value">0</span>원권입니다.</h2>
+                    <h2 id="total-value-text" class="total-value"></h2>
                 </div>
 
                 <div class="comparison-container">
                     <img id="result-money-img" src="images/mymoney.webp" alt="My Face Money - AI 분석 화폐 결과"
-                        class="money-img" loading="lazy">
+                        class="money-img" loading="lazy" data-i18n-alt="money_result_alt">
                     <span id="money-overlay-text" class="money-overlay">0</span>
                     <div class="face-frame">
-                        <img id="result-face" src="" alt="Your Face" class="processed-face">
+                        <img id="result-face" src="" alt="Your Face" class="processed-face"
+                            data-i18n-alt="your_face_alt">
                     </div>
                 </div>
 
-                <h3 class="result-subtitle">세부 분석 결과</h3>
+                <h3 class="result-subtitle" data-i18n="result_subtitle">세부 분석 결과</h3>
                 <div id="label-container" class="label-container">
                     <!-- Results will be injected here -->
                 </div>
 
-                <button class="btn btn-secondary" onclick="resetUpload()">다시 시도하기</button>
+                <button class="btn btn-secondary" onclick="resetUpload()" data-i18n="retry_button">다시 시도하기</button>
             </div>
         </section>
 
         <footer class="footer">
-            <p><a href="about.html" style="color: var(--primary); text-decoration: none;">어떻게 계산되나요?</a></p>
+            <p><a href="about.html" style="color: var(--primary); text-decoration: none;" data-i18n="how_it_works">어떻게
+                    계산되나요?</a></p>
             <p>&copy; 2026 My Face Money. Powered by Teachable Machine</p>
         </footer>
     </main>
