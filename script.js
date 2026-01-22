@@ -13,11 +13,11 @@ const CURRENCY_CONFIG = {
         modelURL: "https://teachablemachine.withgoogle.com/models/tBCgPyqR3/",
         unit: "엔",
         prefix: "item_yen_",
-        moneyBg: "images/myjpy.png",
-        overlayColor: "#6b5e4c",
-        strokeColor: "#cbbba0",
-        faceFrame: { right: 'auto', top: '48.8%', left: '49.8%', transform: 'translate(-50%, -50%)', width: '23%', borderRadius: '50%' },
-        faceFilter: "sepia(30%) hue-rotate(-10deg) saturate(0.7) brightness(1.1) contrast(1.1)"
+        moneyBg: "images/mymoney.webp",
+        overlayColor: "#3d9180", // Sync with KRW since it uses the same background
+        strokeColor: "#183722",
+        faceFrame: { right: '12%', top: '50%', left: 'auto', transform: 'translateY(-50%)', width: '29.75%', borderRadius: '50%' },
+        faceFilter: "sepia(20%) hue-rotate(95deg) saturate(0.8) brightness(1.2) contrast(1.0)"
     }
 };
 
@@ -142,20 +142,11 @@ async function predict() {
     Object.assign(faceFrame.style, config.faceFrame);
     resultFace.style.filter = config.faceFilter;
 
-    // Adjust overlay text position and style for JPY if needed
-    if (currentCurrency === 'JPY') {
-        moneyOverlayText.style.left = '6%';
-        moneyOverlayText.style.bottom = '10%';
-        moneyOverlayText.style.fontSize = '7cqw';
-        moneyOverlayText.style.fontFamily = "'Roboto Mono', monospace";
-        moneyOverlayText.style.letterSpacing = "0";
-    } else {
-        moneyOverlayText.style.left = '7%';
-        moneyOverlayText.style.bottom = '8%';
-        moneyOverlayText.style.fontSize = '8.0cqw';
-        moneyOverlayText.style.fontFamily = "'Roboto Mono', monospace";
-        moneyOverlayText.style.letterSpacing = "-0.05em";
-    }
+    moneyOverlayText.style.left = '7%';
+    moneyOverlayText.style.bottom = '8%';
+    moneyOverlayText.style.fontSize = '8.0cqw';
+    moneyOverlayText.style.fontFamily = "'Roboto Mono', monospace";
+    moneyOverlayText.style.letterSpacing = "-0.05em";
 
     resultMoneyImg.src = config.moneyBg;
 
