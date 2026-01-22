@@ -151,7 +151,7 @@ async function predict() {
     resultMoneyImg.src = config.moneyBg;
 
     prediction.forEach((p, i) => {
-        if (p.probability < 0.01) return; // Skip very low probabilities
+        // Show all results even if probability is low
 
         const percentage = (p.probability * 100).toFixed(1);
         const resultItem = document.createElement('div');
