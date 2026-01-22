@@ -92,11 +92,14 @@ async function predict() {
         resultItem.className = 'result-item';
         resultItem.style.animationDelay = `${i * 0.1}s`;
 
-        const formattedLabel = parseFloat(p.className.replace(/,/g, '')).toLocaleString();
+        const rawValue = p.className.replace(/,/g, '');
+        const paddedValue = rawValue.padStart(5, '0');
+        const imgSrc = `images/item_won_${paddedValue}.png`;
+        const formattedLabel = parseFloat(rawValue).toLocaleString();
 
         resultItem.innerHTML = `
             <div class="result-label-row">
-                <span>${formattedLabel}원</span>
+                <span><img src="${imgSrc}" class="item-icon" alt="${formattedLabel}원">${formattedLabel}원</span>
                 <span>${percentage}%</span>
             </div>
             <div class="progress-bar-bg">

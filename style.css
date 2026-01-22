@@ -331,7 +331,17 @@ body {
 .result-label-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-weight: 600;
+}
+
+.item-icon {
+    width: 32px;
+    height: auto;
+    border-radius: 2px;
+    margin-right: 8px;
+    vertical-align: middle;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .progress-bar-bg {
