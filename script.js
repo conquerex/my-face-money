@@ -1,25 +1,31 @@
-const URL = "https://teachablemachine.withgoogle.com/models/TzriknE80/";
-
-let model, labelContainer, maxPredictions;
-
-// Load the image model
-async function init() {
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
-
-    try {
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
-        console.log("Model loaded successfully");
-    } catch (e) {
-        console.error("Error loading model:", e);
-        alert("모델을 불러오는 데 실패했습니다.");
+const CURRENCY_CONFIG = {
+    KRW: {
+        modelURL: "https://teachablemachine.withgoogle.com/models/TzriknE80/",
+        unit: "원",
+        prefix: "item_won_",
+        moneyBg: "images/mymoney.webp",
+        overlayColor: "#3d9180",
+        strokeColor: "#183722",
+        faceFrame: { right: '12%', top: '50%', left: 'auto', transform: 'translateY(-50%)', width: '29.75%', borderRadius: '50%' }
+    },
+    JPY: {
+        modelURL: "https://teachablemachine.withgoogle.com/models/tBCgPyqR3/",
+        unit: "엔",
+        prefix: "item_yen_",
+        moneyBg: "images/myjpy.png",
+        overlayColor: "#6b5e4c",
+        strokeColor: "#cbbba0",
+        faceFrame: { right: 'auto', top: '48.8%', left: '49.8%', transform: 'translate(-50%, -50%)', width: '23%', borderRadius: '50%' }
     }
-}
+};
 
-// Initialize on page load
-init();
+let currentCurrency = 'KRW';
+let models = {
+    KRW: null,
+    JPY: null
+};
 
+// Elements
 const imageInput = document.getElementById('image-input');
 const facePreview = document.getElementById('face-preview');
 const uploadArea = document.getElementById('upload-area');
@@ -29,6 +35,51 @@ const loadingOverlay = document.getElementById('loading-overlay');
 const resultArea = document.getElementById('result-area');
 const labelContainerElement = document.getElementById('label-container');
 const resultFace = document.getElementById('result-face');
+const resultMoneyImg = document.getElementById('result-money-img');
+const moneyValueDisplay = document.getElementById('money-value');
+const moneyOverlayText = document.getElementById('money-overlay-text');
+const totalValueText = document.getElementById('total-value-text');
+
+async function setCurrency(currency) {
+    if (currentCurrency === currency) return;
+
+    currentCurrency = currency;
+
+    // Update UI active state
+    document.querySelectorAll('.currency-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    document.getElementById(`select-${currency.toLowerCase()}`).classList.add('active');
+
+    // Reset results if any
+    resetUpload();
+
+    // Preload model if not loaded
+    loadModel(currency);
+}
+
+async function loadModel(currency) {
+    if (models[currency]) return models[currency];
+
+    const config = CURRENCY_CONFIG[currency];
+    const modelURL = config.modelURL + "model.json";
+    const metadataURL = config.modelURL + "metadata.json";
+
+    try {
+        console.log(`Loading ${currency} model...`);
+        const model = await tmImage.load(modelURL, metadataURL);
+        models[currency] = model;
+        console.log(`${currency} model loaded successfully`);
+        return model;
+    } catch (e) {
+        console.error(`Error loading ${currency} model:`, e);
+        alert(`${currency} 모델을 불러오는 데 실패했습니다.`);
+        return null;
+    }
+}
+
+// Initial load
+loadModel('KRW');
 
 imageInput.addEventListener('change', function (e) {
     if (e.target.files && e.target.files[0]) {
@@ -43,31 +94,25 @@ imageInput.addEventListener('change', function (e) {
 });
 
 async function startAnalysis() {
-    // UI Transitions
     uploadContent.classList.add('hidden');
     previewContainer.classList.remove('hidden');
     loadingOverlay.classList.remove('hidden');
     resultArea.classList.add('hidden');
     labelContainerElement.innerHTML = '';
 
-    // Wait a bit for the "scanning" effect
     await new Promise(resolve => setTimeout(resolve, 2000));
-
     predict();
 }
 
 async function predict() {
-    if (!model) {
-        alert("모델이 아직 로드되지 않았습니다.");
-        return;
-    }
+    const model = await loadModel(currentCurrency);
+    if (!model) return;
 
     const prediction = await model.predict(facePreview);
-
-    // Sort predictions by probability (highest first)
     prediction.sort((a, b) => b.probability - a.probability);
 
-    // Calculate sum of (Result * Probability)
+    const config = CURRENCY_CONFIG[currentCurrency];
+
     let totalValue = 0;
     prediction.forEach(p => {
         const value = parseFloat(p.className.replace(/,/g, ''));
@@ -79,27 +124,48 @@ async function predict() {
     loadingOverlay.classList.add('hidden');
     resultArea.classList.remove('hidden');
 
-    // Update total value text
     const roundedValue = Math.round(totalValue);
     const formattedTotal = roundedValue.toLocaleString();
-    document.getElementById('money-value').innerText = formattedTotal;
-    document.getElementById('money-overlay-text').innerText = roundedValue; // No comma here
+
+    moneyValueDisplay.innerText = formattedTotal;
+    totalValueText.innerHTML = `당신은 <span id="money-value">${formattedTotal}</span>${config.unit}권입니다.`;
+    moneyValueDisplay.innerText = formattedTotal; // Re-sync just in case
+
+    moneyOverlayText.innerText = roundedValue;
+    moneyOverlayText.style.color = config.overlayColor;
+    moneyOverlayText.style.webkitTextStrokeColor = config.strokeColor;
+
+    // Apply dynamic face frame positioning
+    const faceFrame = document.querySelector('.face-frame');
+    Object.assign(faceFrame.style, config.faceFrame);
+
+    // Adjust overlay text position for JPY if needed
+    if (currentCurrency === 'JPY') {
+        moneyOverlayText.style.left = '6%';
+        moneyOverlayText.style.bottom = '8%';
+    } else {
+        moneyOverlayText.style.left = '7%';
+        moneyOverlayText.style.bottom = '8%';
+    }
+
+    resultMoneyImg.src = config.moneyBg;
 
     prediction.forEach((p, i) => {
-        const percentage = (p.probability * 100).toFixed(1);
+        if (p.probability < 0.01) return; // Skip very low probabilities
 
+        const percentage = (p.probability * 100).toFixed(1);
         const resultItem = document.createElement('div');
         resultItem.className = 'result-item';
         resultItem.style.animationDelay = `${i * 0.1}s`;
 
         const rawValue = p.className.replace(/,/g, '');
         const paddedValue = rawValue.padStart(5, '0');
-        const imgSrc = `images/item_won_${paddedValue}.png`;
+        const imgSrc = `images/${config.prefix}${paddedValue}.png`;
         const formattedLabel = parseFloat(rawValue).toLocaleString();
 
         resultItem.innerHTML = `
             <div class="result-label-row">
-                <span><img src="${imgSrc}" class="item-icon" alt="${formattedLabel}원">${formattedLabel}원</span>
+                <span><img src="${imgSrc}" class="item-icon" alt="${formattedLabel}${config.unit}"> ${formattedLabel}${config.unit}</span>
                 <span>${percentage}%</span>
             </div>
             <div class="progress-bar-bg">
@@ -109,14 +175,11 @@ async function predict() {
 
         labelContainerElement.appendChild(resultItem);
 
-        // Animate progress bar
         setTimeout(() => {
             const bar = resultItem.querySelector('.progress-bar-fill');
             if (bar) bar.style.width = `${percentage}%`;
         }, 100 + (i * 100));
     });
-
-
 }
 
 function resetUpload() {
@@ -153,4 +216,3 @@ uploadArea.addEventListener('drop', (e) => {
         reader.readAsDataURL(e.dataTransfer.files[0]);
     }
 });
-

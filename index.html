@@ -98,6 +98,24 @@
             </h2>
         </header>
 
+        <section class="card currency-selection">
+            <div class="currency-grid">
+                <div class="currency-item active" id="select-krw" onclick="setCurrency('KRW')">
+                    <div class="flag">🇰🇷</div>
+                    <span>대한민국 원 (KRW)</span>
+                </div>
+                <div class="currency-item" id="select-jpy" onclick="setCurrency('JPY')">
+                    <div class="flag">🇯🇵</div>
+                    <span>일본 엔화 (JPY)</span>
+                </div>
+                <div class="currency-item disabled">
+                    <div class="flag">🇺🇸</div>
+                    <span>미국 달러 (USD)</span>
+                    <span class="badge">Coming Soon</span>
+                </div>
+            </div>
+        </section>
+
         <section class="card main-card">
             <div id="upload-area" class="upload-area">
                 <div class="upload-content">
@@ -131,7 +149,8 @@
                 </div>
 
                 <div class="comparison-container">
-                    <img src="images/mymoney.webp" alt="My Face Money - AI 분석 화폐 결과" class="money-img" loading="lazy">
+                    <img id="result-money-img" src="images/mymoney.webp" alt="My Face Money - AI 분석 화폐 결과"
+                        class="money-img" loading="lazy">
                     <span id="money-overlay-text" class="money-overlay">0</span>
                     <div class="face-frame">
                         <img id="result-face" src="" alt="Your Face" class="processed-face">
@@ -144,20 +163,6 @@
                 </div>
 
                 <button class="btn btn-secondary" onclick="resetUpload()">다시 시도하기</button>
-            </div>
-        </section>
-
-        <section class="card coming-soon-section">
-            <h3 class="section-title">Coming Soon</h3>
-            <div class="currency-grid">
-                <div class="currency-item disabled">
-                    <div class="flag">🇯🇵</div>
-                    <span>일본 엔화 (JPY)</span>
-                </div>
-                <div class="currency-item disabled">
-                    <div class="flag">🇺🇸</div>
-                    <span>미국 달러 (USD)</span>
-                </div>
             </div>
         </section>
 
