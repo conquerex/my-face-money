@@ -10,11 +10,11 @@ const CURRENCY_CONFIG = {
         faceFilter: "sepia(20%) hue-rotate(95deg) saturate(0.8) brightness(1.2) contrast(1.0)"
     },
     JPY: {
-        modelURL: "https://teachablemachine.withgoogle.com/models/tBCgPyqR3/",
+        modelURL: "https://teachablemachine.withgoogle.com/models/UvsKhD7ls/",
         unit: "엔",
         prefix: "item_yen_",
         moneyBg: "images/mymoney.webp",
-        overlayColor: "#3d9180", // Sync with KRW since it uses the same background
+        overlayColor: "#3d9180",
         strokeColor: "#183722",
         faceFrame: { right: '12%', top: '50%', left: 'auto', transform: 'translateY(-50%)', width: '29.75%', borderRadius: '50%' },
         faceFilter: "sepia(20%) hue-rotate(95deg) saturate(0.8) brightness(1.2) contrast(1.0)"
@@ -117,7 +117,13 @@ async function predict() {
 
     let totalValue = 0;
     prediction.forEach(p => {
-        const value = parseFloat(p.className.replace(/,/g, ''));
+        let className = p.className;
+        // Fix for JPY model where 10000 yen is labeled as "Class 3"
+        if (currentCurrency === 'JPY' && className === 'Class 3') {
+            className = '10000';
+        }
+
+        const value = parseFloat(className.replace(/,/g, ''));
         if (!isNaN(value)) {
             totalValue += value * p.probability;
         }
@@ -158,7 +164,13 @@ async function predict() {
         resultItem.className = 'result-item';
         resultItem.style.animationDelay = `${i * 0.1}s`;
 
-        const rawValue = p.className.replace(/,/g, '');
+        let className = p.className;
+        // Fix for JPY model where 10000 yen is labeled as "Class 3"
+        if (currentCurrency === 'JPY' && className === 'Class 3') {
+            className = '10000';
+        }
+
+        const rawValue = className.replace(/,/g, '');
         const paddedValue = rawValue.padStart(5, '0');
         const imgSrc = `images/${config.prefix}${paddedValue}.png`;
         const formattedLabel = parseFloat(rawValue).toLocaleString();
