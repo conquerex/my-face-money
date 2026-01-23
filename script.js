@@ -41,7 +41,6 @@ const resultArea = document.getElementById('result-area');
 const labelContainerElement = document.getElementById('label-container');
 const resultFace = document.getElementById('result-face');
 const resultMoneyImg = document.getElementById('result-money-img');
-const moneyValueDisplay = document.getElementById('money-value');
 const moneyOverlayText = document.getElementById('money-overlay-text');
 const totalValueText = document.getElementById('total-value-text');
 
@@ -64,7 +63,8 @@ const TRANSLATIONS = {
         money_result_alt: "My Face Money - AI 분석 화폐 결과",
         your_face_alt: "당신의 얼굴",
         krw_unit: "원",
-        jpy_unit: "엔"
+        jpy_unit: "엔",
+        unit_bill: "권"
     },
     ja: {
         subtitle: "AI顔価値分析＆観相テスト",
@@ -84,7 +84,8 @@ const TRANSLATIONS = {
         money_result_alt: "My Face Money - AI分析の通貨結果",
         your_face_alt: "あなたの顔",
         krw_unit: "ウォン",
-        jpy_unit: "円"
+        jpy_unit: "円",
+        unit_bill: "券"
     }
 };
 
@@ -227,9 +228,13 @@ async function predict() {
     const formattedTotal = roundedValue.toLocaleString();
 
     const unit = currentCurrency === 'KRW' ? t.krw_unit : t.jpy_unit;
-    moneyValueDisplay.innerText = formattedTotal;
-    totalValueText.innerHTML = `${t.result_text_pre}<span id="money-value">${formattedTotal}</span>${unit}${t.currency_unit}${t.result_text_post}`;
-    moneyValueDisplay.innerText = formattedTotal; // Re-sync just in case
+    const billUnit = t.unit_bill;
+    totalValueText.innerHTML = `${t.result_text_pre}<span id="money-value">${formattedTotal}</span>${unit}${billUnit}${t.result_text_post}`;
+    // Re-fetch the money-value element after it's created in the innerHTML above
+    const moneyValueDisplayElement = document.getElementById('money-value');
+    if (moneyValueDisplayElement) {
+        moneyValueDisplayElement.innerText = formattedTotal;
+    }
 
     moneyOverlayText.innerText = roundedValue;
     moneyOverlayText.style.color = config.overlayColor;
@@ -270,8 +275,8 @@ async function predict() {
         resultItem.innerHTML = `
             <div class="result-label-row">
                 <div class="label-with-icon">
-                    <img src="${imgSrc}" class="item-icon" alt="${formattedLabel}${unit}" onerror="this.style.display='none'">
-                    <span class="currency-label">${formattedLabel}${unit}</span>
+                    <img src="${imgSrc}" class="item-icon" alt="${formattedLabel}${unit}${billUnit}" onerror="this.style.display='none'">
+                    <span class="currency-label">${formattedLabel}${unit}${billUnit}</span>
                 </div>
                 <span class="percentage-value">${percentage}%</span>
             </div>
