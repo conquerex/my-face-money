@@ -1,0 +1,39 @@
+# My Face Money Project Rules
+
+## Tech Stack & Architecture
+- **Core**: Vanilla HTML5, CSS3, and Vanilla JavaScript (ES6+).
+- **AI Libraries**: TensorFlow.js and Teachable Machine Image.
+- **Project Structure**: Simple flat structure for a static web application.
+- **Hosting**: Cloudflare Pages.
+
+## Coding Standards & Patterns
+- **Language & i18n**: 
+  - Centralize all strings in the `TRANSLATIONS` object in `script.js`.
+  - Use `data-i18n` (text) and `data-i18n-alt` (alt text) attributes in HTML for localization.
+  - Always call `updateUI()` when switching languages or rendering dynamic localized content.
+- **AI Model Integration**:
+  - Currency-specific settings (URLs, filters, positioning) belong in `CURRENCY_CONFIG` in `script.js`.
+  - Use `async/await` for model loading and prediction to maintain UI responsiveness.
+- **Event Handling**: Use standard `addEventListener` for user interactions (e.g., file upload, drag-and-drop).
+
+## Design & Aesthetics
+- **Theme**: Premium Dark Mode with Glassmorphism.
+- **Consistency**: Use CSS variables defined in `:root` (`--primary`, `--bg-dark`, etc.) for all styling.
+- **Animations**: Implement smooth micro-interactions (hover effects, progress bars, scanning lines) to enhance UX.
+- **Responsiveness**: Mobile-first design using media queries for smaller screens.
+
+## SEO & Performance
+- **Metadata**: Ensure every HTML file has unique meta titles and descriptions.
+- **Social Tags**: Maintain Open Graph and Twitter Card tags for better SNS sharing.
+- **Optimization**: Use `defer` for script loading and non-blocking font loading strategies.
+- **Accessibility**: Provide descriptive `alt` tags for images (via i18n system).
+
+## Asset Management
+- **Directory**: All static assets should be in the `images/` folder.
+- **Naming Convention**: 
+  - Currency icons: `item_<prefix><value>.png` (e.g., `item_won_01000.png`).
+  - Use high-quality but optimized formats like `.webp` or `.svg`.
+
+## Workflow
+- **Rule Management**: Use `.cursorrules` to enforce these standards across all AI-driven coding sessions.
+- **Modifications**: When adding features, ensure they align with the existing i18n and design system.

@@ -19,6 +19,11 @@ const CURRENCY_CONFIG = {
     }
 };
 
+const DENOMINATIONS = {
+    KRW: ['100', '1000', '5000', '10000', '50000'],
+    JPY: ['1000', '5000', '10000']
+};
+
 let currentCurrency = 'KRW';
 let models = {
     KRW: null,
@@ -195,13 +200,19 @@ async function predict() {
     const config = CURRENCY_CONFIG[currentCurrency];
 
     let totalValue = 0;
-    prediction.forEach(p => {
-        let className = p.className;
-        // Fix for JPY model where 10000 yen is labeled as "Class 3"
-        if (currentCurrency === 'JPY' && className === 'Class 3') {
-            className = '10000';
+    // Ensure all denominations are present in the prediction
+    const expectedClasses = DENOMINATIONS[currentCurrency];
+    expectedClasses.forEach(cls => {
+        if (!prediction.find(p => p.className === cls)) {
+            prediction.push({ className: cls, probability: 0 });
         }
+    });
 
+    // Re-sort to incorporate added 0-probability items
+    prediction.sort((a, b) => b.probability - a.probability);
+
+    prediction.forEach(p => {
+        const className = p.className;
         const value = parseFloat(className.replace(/,/g, ''));
         if (!isNaN(value)) {
             totalValue += value * p.probability;
